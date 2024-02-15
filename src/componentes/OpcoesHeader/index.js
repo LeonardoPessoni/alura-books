@@ -10,6 +10,10 @@ const Opcao = styled.li`
   padding: 0 5px;
   cursor: pointer;
   min-width: 120px;
+  transition: all 0.3s ease;
+  &:hover{
+    background-color: rgba(0, 71, 115, 0.1);
+  }
 `
 const Opcoes = styled.ul`
   display: flex;

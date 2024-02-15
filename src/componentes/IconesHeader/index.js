@@ -5,6 +5,10 @@ import styled from 'styled-components';
 const Icone = styled.li`
   margin-right: 40px;
   width: 25px;
+  transition: all 0.3s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
 `
 const Icones = styled.ul`
   display: flex;

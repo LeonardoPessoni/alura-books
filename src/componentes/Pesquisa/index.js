@@ -36,7 +36,7 @@ const Resultado = styled.div`
 
     p {
         width: 200px;
-        margin: 0; /* Corrigido */
+        margin: 0;
     }
 
     img {
@@ -44,6 +44,7 @@ const Resultado = styled.div`
     }
 
     div:hover {
+        transition: all 0.8s ease;
         background-color: rgba(255, 255, 255, 0.03);
     }
 `;
@@ -62,8 +63,8 @@ function Pesquisa() {
     };
 
     const handleLimparPesquisa = () => {
-        setTextoDigitado(""); // Limpa o texto da pesquisa
-        setLivrosPesquisados([]); // Limpa os resultados da pesquisa
+        setTextoDigitado(""); 
+        setLivrosPesquisados([]); 
     };
 
     return (
@@ -76,7 +77,7 @@ function Pesquisa() {
                 onChange={evento => {
                     setTextoDigitado(evento.target.value);
                     if (evento.target.value.trim() === "") {
-                        handleLimparPesquisa(); // Limpa a pesquisa se o texto for limpo
+                        handleLimparPesquisa(); 
                     }
                 }}
                 onBlur={handlePesquisa}
