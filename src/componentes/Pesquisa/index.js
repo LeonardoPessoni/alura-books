@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { getLivros } from '../../Servicos/livros';
 import { postFavoritos } from '../../Servicos/favoritos';
-import livroImg from '../../imagens/livro.png'
 
 
 const PesquisaContainer = styled.section`
@@ -65,9 +64,9 @@ function Pesquisa() {
         setLivros(livrosDaAPI)
     }
 
-    async function insertFavorito(id) {
+    async function insereFavorito(id) {
         await postFavoritos(id)
-        alert(`Livro de id:${id} inserido!`)
+        alert(`Livro de id: ${id} inserido!`)
     }
 
     return (
@@ -83,13 +82,12 @@ function Pesquisa() {
                 }}
             />  
             <Resultado>
-                { livrosPesquisados.map( livro => (
-                    <div onClick={ () => insertFavorito(livro.id) }>
-                        <p>{livro.nome}</p>
-                        <br />
-                        <img src={livroImg} alt="" />        
+                {livrosPesquisados.map((livro) => (
+                    <div key={livro.id} onClick={() => insereFavorito(livro.id)}>
+                        <img src={livro.src} alt="" /> 
+                        <p>{livro.nome}</p> 
                     </div>     
-                ) ) }
+                ))}
             </Resultado>
             
         </PesquisaContainer>

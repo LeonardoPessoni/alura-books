@@ -12,12 +12,12 @@ async function postFavoritos(id) {
     await favoritosAPI.post(`/${id}`)
 }
 
-async function deleteFavoritos(id) {
+async function deleteFavorito(id) {
     await favoritosAPI.delete(`/${id}`)
 }
 
 export {
     getFavoritos,
     postFavoritos,
-    deleteFavoritos
+    deleteFavorito
 };
