@@ -1,7 +1,10 @@
 import Input from '../Input';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { livros } from './dadosPesquisa';
+import { useEffect, useState } from 'react';
+import { getLivros } from '../../Servicos/livros';
+import { postFavoritos } from '../../Servicos/favoritos';
+import livroImg from '../../imagens/livro.png'
+
 
 const PesquisaContainer = styled.section`
     background-image: linear-gradient(90deg, #002F52 35%, #326589 165%);
@@ -51,21 +54,21 @@ const Resultado = styled.div`
 
 function Pesquisa() {
     const [livrosPesquisados, setLivrosPesquisados] = useState([]);
-    const [textoDigitado, setTextoDigitado] = useState("");
+    const [livros, setLivros] = useState([]);
 
-    const handlePesquisa = () => {
-        if (textoDigitado.trim() === "") {
-            setLivrosPesquisados([]);
-        } else {
-            const resultadoPesquisa = livros.filter(livro => livro.nome.includes(textoDigitado));
-            setLivrosPesquisados(resultadoPesquisa);
-        }
-    };
+    useEffect(() => {
+        fetchLivros()
+    }, [])
 
-    const handleLimparPesquisa = () => {
-        setTextoDigitado(""); 
-        setLivrosPesquisados([]); 
-    };
+    async function fetchLivros() {
+        const livrosDaAPI =  await getLivros()
+        setLivros(livrosDaAPI)
+    }
+
+    async function insertFavorito(id) {
+        await postFavoritos(id)
+        alert(`Livro de id:${id} inserido!`)
+    }
 
     return (
         <PesquisaContainer>
@@ -73,28 +76,22 @@ function Pesquisa() {
             <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
             <Input 
                 placeholder="Escreva sua próxima leitura"
-                value={textoDigitado}
-                onChange={evento => {
-                    setTextoDigitado(evento.target.value);
-                    if (evento.target.value.trim() === "") {
-                        handleLimparPesquisa(); 
-                    }
-                }}
-                onBlur={handlePesquisa}
-                onKeyPress={(evento) => {
-                    if (evento.key === "Enter") {
-                        handlePesquisa();
-                    }
+                onBlur={evento => {
+                    const textoDigitado = evento.target.value
+                    const resultadoPesquisa = livros.filter(livro => livro.nome.includes(textoDigitado))
+                    setLivrosPesquisados(resultadoPesquisa)
                 }}
             />  
             <Resultado>
-                {livrosPesquisados.map(livro => (
-                    <div className='item' key={livro.id}>
-                        <img src={livro.src} alt=''/>
+                { livrosPesquisados.map( livro => (
+                    <div onClick={ () => insertFavorito(livro.id) }>
                         <p>{livro.nome}</p>
-                    </div>
-                ))}
+                        <br />
+                        <img src={livroImg} alt="" />        
+                    </div>     
+                ) ) }
             </Resultado>
+            
         </PesquisaContainer>
     );
 }
